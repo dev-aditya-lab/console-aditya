@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
-import { HoverBorderGradient } from "./ui/hover-border-gradient";
+import { HoverBorderGradient } from "../ui/hover-border-gradient";
+import React from "react";
 
 export default function HeroSection() {
 	return (
-		<div className="relative w-screen  mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
+		<div className="relative min-h-[calc(100vh-55px)]   mx-auto flex max-w-7xl flex-col items-center justify-center">
 			<div className="px-4 py-10 md:py-20">
 			
 				<h1 className="relative z-10 mx-auto max-w-4xl text-center   text-slate-700  dark:text-slate-300">

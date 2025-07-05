@@ -21,7 +21,7 @@ export function MainNavbar() {
 		},
 		{
 			name: "About",
-			link: "#pricing",
+			link: "#about",
 		},
 		{
 			name: "Contact",

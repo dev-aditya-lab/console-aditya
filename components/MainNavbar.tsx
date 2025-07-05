@@ -1,96 +1,119 @@
 "use client";
 import {
-  Navbar,
-  NavBody,
-  NavItems,
-  MobileNav,
-  NavbarLogo,
-  NavbarButton,
-  MobileNavHeader,
-  MobileNavToggle,
-  MobileNavMenu,
+	Navbar,
+	NavBody,
+	NavItems,
+	MobileNav,
+	NavbarLogo,
+	NavbarButton,
+	MobileNavHeader,
+	MobileNavToggle,
+	MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
+import { GithubIcon, SquareArrowOutUpRight } from "lucide-react";
 import { useState } from "react";
 
 export function MainNavbar() {
-    
-  const navItems = [
-    {
-      name: "Features",
-      link: "#features",
-    },
-    {
-      name: "Pricing",
-      link: "#pricing",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
-    },
-  ];
+	const navItems = [
+		{
+			name: "Home",
+			link: "/",
+		},
+		{
+			name: "About",
+			link: "#pricing",
+		},
+		{
+			name: "Contact",
+			link: "#contact",
+		},
+		{
+			name: "Projects",
+			link: "#contact",
+		},
+	];
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  return (
-    <div className="relative w-full">
-      <Navbar>
-        {/* Desktop Navigation */}
-        <NavBody>
-          <NavbarLogo />
-          <NavItems items={navItems} />
-          <div className="flex items-center gap-4">
-            <NavbarButton variant="secondary">Login</NavbarButton>
-            <NavbarButton variant="primary">Book a call</NavbarButton>
-          </div>
-        </NavBody>
+	return (
+		<div className="relative w-full">
+			<Navbar>
+				{/* Desktop Navigation */}
+				<NavBody>
+					<NavbarLogo />
+					<NavItems items={navItems} />
+					<div className="flex items-center gap-4">
+						<NavbarButton
+							target="_blank"
+							className="flex gap-2 items-center justify-between"
+							href="https://www.npmjs.com/package/webdev-power-kit"
+							variant="gradient"
+						>
+							Use webdev-power-kit <SquareArrowOutUpRight />
+						</NavbarButton>
+						<NavbarButton
+							variant="primary"
+							target="_blank"
+							className="flex gap-2 items-center justify-between"
+						>
+							GitHub
+							<GithubIcon />
+						</NavbarButton>
+					</div>
+				</NavBody>
 
-        {/* Mobile Navigation */}
-        <MobileNav>
-          <MobileNavHeader>
-            <NavbarLogo />
-            <MobileNavToggle
-              isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
-          </MobileNavHeader>
+				{/* Mobile Navigation */}
+				<MobileNav>
+					<MobileNavHeader>
+						<NavbarLogo />
+						<MobileNavToggle
+							isOpen={isMobileMenuOpen}
+							onClick={() =>
+								setIsMobileMenuOpen(!isMobileMenuOpen)
+							}
+						/>
+					</MobileNavHeader>
 
-          <MobileNavMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
-          >
-            {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </a>
-            ))}
-            <div className="flex w-full flex-col gap-4">
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full"
-              >
-                Login
-              </NavbarButton>
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full"
-              >
-                Book a call
-              </NavbarButton>
-            </div>
-          </MobileNavMenu>
-        </MobileNav>
-      </Navbar>
-      {/* <DummyContent /> */}
+					<MobileNavMenu
+						isOpen={isMobileMenuOpen}
+						onClose={() => setIsMobileMenuOpen(false)}
+					>
+						{navItems.map((item, idx) => (
+							<a
+								key={`mobile-link-${idx}`}
+								href={item.link}
+								onClick={() => setIsMobileMenuOpen(false)}
+								className="relative text-neutral-600 dark:text-neutral-300"
+							>
+								<span className="block">{item.name}</span>
+							</a>
+						))}
+						<div className="flex w-full flex-col gap-4">
+							<NavbarButton
+								onClick={() => setIsMobileMenuOpen(false)}
+								target="_blank"
+								className="flex gap-2 items-center justify-between"
+								href="https://www.npmjs.com/package/webdev-power-kit"
+								variant="gradient"
+							>
+								Use webdev-power-kit <SquareArrowOutUpRight />
+							</NavbarButton>
+							<NavbarButton
+								onClick={() => setIsMobileMenuOpen(false)}
+								variant="primary"
+								target="_blank"
+								className="flex gap-2 items-center justify-between"
+							>
+								GitHub
+								<GithubIcon />
+							</NavbarButton>
+						</div>
+					</MobileNavMenu>
+				</MobileNav>
+			</Navbar>
+			{/* <DummyContent /> */}
 
-      {/* Navbar */}
-    </div>
-  );
+			{/* Navbar */}
+		</div>
+	);
 }
- 

@@ -36,7 +36,7 @@ export function MainNavbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
-		<div className="relative w-full">
+		<div className="relative w-full bg-black">
 			<Navbar>
 				{/* Desktop Navigation */}
 				<NavBody>

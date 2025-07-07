@@ -109,7 +109,7 @@ const tools = [
 					<h1 className="ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 inline-flex items-center justify-center px-6 py-2 border-0 rounded-full text-lg font-medium text-white bg-gradient-to-l from-blue-500 to-purple-600 shadow-lg hover:from-purple-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="skills">
 						My Strengths
 					</h1>
-				<div id="contact" className="md:w-4xl px-5 md:px-0 z-10 py-10">
+				<div id="contact" className="md:w-4xl max-w-screen px-5 md:px-0 z-10 py-10">
                     <InfiniteMovingCards
         items={lang}
         direction="right"

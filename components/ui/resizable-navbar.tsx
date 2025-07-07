@@ -244,7 +244,7 @@ export const NavbarLogo = () => {
         height={30}
         className="rounded-md"
       />
-      <span className="font-medium text-black dark:text-white"> {`console.log("Aditya Gupta's Journey")`}</span>
+      <span className="font-medium text-black dark:text-white"> {`console.log("Aditya")`}</span>
     </a>
   );
 };

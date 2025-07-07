@@ -29,7 +29,11 @@ export function MainNavbar() {
 		},
 		{
 			name: "Projects",
-			link: "#contact",
+			link: "https://www.npmjs.com/package/webdev-power-kit",
+		},
+		{
+			name: "Skills",
+			link: "#skills",
 		},
 	];
 

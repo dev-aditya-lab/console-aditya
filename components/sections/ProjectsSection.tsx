@@ -15,27 +15,27 @@ type ProjectItem = {
   createdAt: string;
 };
 
-function formatDate(input: string): string {
-  try {
-    return new Date(input).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return input;
-  }
-}
-
 export default async function ProjectsSection() {
   await connectDB();
   const raw = await Project.find().sort({ createdAt: -1 }).lean();
-  const projects: ProjectItem[] = raw.map((p: any) => ({
+  type LeanProject = {
+    _id: unknown;
+    title: string;
+    description: string;
+    imageUrl: string;
+    tags?: string[];
+    githubUrl?: string;
+    liveUrl?: string;
+    order?: number;
+    createdAt?: Date;
+  };
+  const docs = raw as unknown as LeanProject[];
+  const projects: ProjectItem[] = docs.map((p: LeanProject) => ({
     _id: String(p._id),
     title: p.title,
     description: p.description,
     imageUrl: p.imageUrl,
-    tags: p.tags ?? [],
+    tags: Array.isArray(p.tags) ? p.tags : [],
     githubUrl: p.githubUrl,
     liveUrl: p.liveUrl,
     order: typeof p.order === "number" ? p.order : 0,

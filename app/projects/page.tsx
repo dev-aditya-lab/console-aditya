@@ -6,13 +6,25 @@ export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
   await connectDB();
-  const raw = await Project.find().sort({ order: 1, createdAt: -1 }).lean();
-  const projects: ProjectItem[] = raw.map((p: any) => ({
+  const raw = await Project.find()
+    .sort({ order: 1, createdAt: -1 })
+    .lean<{
+      _id: unknown;
+      title: string;
+      description: string;
+      imageUrl: string;
+      tags?: string[];
+      githubUrl?: string;
+      liveUrl?: string;
+      order?: number;
+      createdAt?: Date;
+    }>();
+  const projects: ProjectItem[] = raw.map((p) => ({
     _id: String(p._id),
     title: p.title,
     description: p.description,
     imageUrl: p.imageUrl,
-    tags: p.tags ?? [],
+    tags: Array.isArray(p.tags) ? p.tags : [],
     githubUrl: p.githubUrl,
     liveUrl: p.liveUrl,
     order: typeof p.order === "number" ? p.order : 0,

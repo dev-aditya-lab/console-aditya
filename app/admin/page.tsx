@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<CloudImage[]>([]);
   const [galleryLoading, setGalleryLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [projects, setProjects] = useState<{
     _id?: string;
     title: string;
@@ -76,22 +77,50 @@ export default function AdminPage() {
     );
   }, [blogs, search]);
 
-  async function reload() {
+  const reload = useCallback(async () => {
     setLoading(true);
+    setErrorMsg(null);
     try {
       const res = await fetch("/api/blogs", { cache: "no-store" });
-      const data = (await res.json()) as BlogItem[];
-      setBlogs(data);
+      if (!res.ok) {
+        setErrorMsg("Failed to load blogs (DB unavailable)");
+        setBlogs([]);
+        return;
+      }
+      const data = (await res.json().catch(() => null)) as BlogItem[] | null;
+      setBlogs(data ?? []);
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
+
+  const loadImages = useCallback(async () => {
+    setGalleryLoading(true);
+    try {
+      const res = await fetch("/api/uploads", { cache: "no-store" });
+      const data = await res.json();
+      setImages(data.resources ?? []);
+    } finally {
+      setGalleryLoading(false);
+    }
+  }, []);
+
+  const loadProjects = useCallback(async () => {
+    const res = await fetch("/api/projects", { cache: "no-store" });
+    if (!res.ok) {
+      setErrorMsg("Failed to load projects (DB unavailable)");
+      setProjects([]);
+      return;
+    }
+    const data = await res.json().catch(() => null);
+    setProjects((data as typeof projects) ?? []);
+  }, []);
 
   useEffect(() => {
     reload();
     loadImages();
     loadProjects();
-  }, []);
+  }, [reload, loadImages, loadProjects]);
 
   async function handleDelete(id?: string) {
     if (!id) return;
@@ -119,17 +148,6 @@ export default function AdminPage() {
     await reload();
   }
 
-  async function loadImages() {
-    setGalleryLoading(true);
-    try {
-      const res = await fetch("/api/uploads", { cache: "no-store" });
-      const data = await res.json();
-      setImages(data.resources ?? []);
-    } finally {
-      setGalleryLoading(false);
-    }
-  }
-
   async function handleUpload(file: File) {
     setUploading(true);
     try {
@@ -149,12 +167,6 @@ export default function AdminPage() {
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
-  }
-
-  async function loadProjects() {
-    const res = await fetch("/api/projects", { cache: "no-store" });
-    const data = await res.json();
-    setProjects(data ?? []);
   }
 
   async function saveProject(p: {
@@ -196,6 +208,11 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto px-6 py-10">
+        {errorMsg && (
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-800/40 dark:bg-red-900/30 dark:text-red-100">
+            {errorMsg}
+          </div>
+        )}
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>

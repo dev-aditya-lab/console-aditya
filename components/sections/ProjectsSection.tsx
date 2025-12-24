@@ -2,6 +2,9 @@ import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
 import Link from "next/link";
 import ProjectsGrid from "@/components/sections/ProjectsGrid";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
 
 type ProjectItem = {
   _id: string;
@@ -16,7 +19,13 @@ type ProjectItem = {
 };
 
 export default async function ProjectsSection() {
-  await connectDB();
+  noStore();
+  try {
+    await connectDB();
+  } catch {
+    // If DB is unavailable during build or runtime, skip rendering section
+    return null;
+  }
   const raw = await Project.find().sort({ createdAt: -1 }).lean();
   type LeanProject = {
     _id: unknown;

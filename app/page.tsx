@@ -7,6 +7,8 @@ import MySkills from "@/components/sections/MySkills";
 import Footer from "@/components/sections/Footer";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 
+export const dynamic = "force-dynamic";
+
 
 export default function Home():React.ReactNode {
   return (

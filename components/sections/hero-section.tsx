@@ -140,7 +140,7 @@ export default function HeroSection() {
 						Let&apos;s Connect <LinkedinIcon className="w-5"/>
 					</button>
 				</a>
-			<a href="mailto:ad1123itya@gmail.com" target="_blank" rel="noopener noreferrer">
+			<a href="mailto:hello@devaditya.dev" target="_blank" rel="noopener noreferrer">
 						<button className="w-60 flex justify-center items-center gap-2 transform rounded-lg border border-gray-300 bg-white px-6 py-2 font-medium text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100 dark:border-gray-700 dark:bg-black dark:text-white dark:hover:bg-gray-900">
 						Let&apos;s build together <PhoneForwarded className="w-5"/>
 					</button>

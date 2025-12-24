@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { FloatingDock } from "../ui/floating-dock";
-import { IconBrandGithub, IconBrandInstagram, IconBrandLinkedin, IconBrandX, IconMail } from "@tabler/icons-react";
+import { IconArticle, IconBrandGithub, IconBrandLinkedin, IconBrandX, IconMail } from "@tabler/icons-react";
 
 
 export function Contact() {
@@ -33,15 +33,15 @@ export function Contact() {
 			icon: (
 				<IconMail className="h-full w-full text-neutral-500 dark:text-neutral-300" />
 			),
-			href: "mailto:ad1123itya@gmail.com",
+			href: "mailto:hello@devaditya.dev",
 		},
 
 		{
-			title: "Instagram",
+			title: "Blogs",
 			icon: (
-				<IconBrandInstagram className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+				<IconArticle className="h-full w-full text-neutral-500 dark:text-neutral-300" />
 			),
-			href: "https://www.instagram.com/_its._.aadi/",
+			href: "/blog",
 		},
 	];
 	return (

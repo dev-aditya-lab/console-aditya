@@ -17,23 +17,27 @@ export function MainNavbar() {
 	const navItems = [
 		{
 			name: "Home",
-			link: "/",
+			link: "/#home",
 		},
 		{
 			name: "About",
-			link: "#about",
-		},
-		{
-			name: "Contact",
-			link: "#contact",
+			link: "/#about",
 		},
 		{
 			name: "Projects",
-			link: "https://www.npmjs.com/package/webdev-power-kit",
+			link: "/#projects",
 		},
 		{
 			name: "Skills",
-			link: "#skills",
+			link: "/#skills",
+		},
+		{
+			name: "Contact",
+			link: "/#contact",
+		},
+		{
+			name: "Blog",
+			link: "/blog",
 		},
 	];
 
@@ -58,6 +62,7 @@ export function MainNavbar() {
 						<NavbarButton
 							variant="primary"
 							target="_blank"
+							href="https://github.com/dev-aditya-lab"
 							className="flex gap-2 items-center justify-between"
 						>
 							GitHub

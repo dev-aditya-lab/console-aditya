@@ -22,7 +22,7 @@ import {
 type SkillGroup = {
   title: string;
   description: string;
-  items: { label: string; icon: JSX.Element }[];
+  items: { label: string; icon: React.ReactElement }[];
 };
 
 const groups: SkillGroup[] = [

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { Metadata } from "next";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -68,3 +69,11 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+  title: "Admin Login",
+};

@@ -5,8 +5,14 @@ const PASS = process.env.ADMIN_PASSWORD;
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const method = req.method;
   const isAdminPage = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
-  const isProtectedApi = pathname.startsWith("/api/blogs") || pathname.startsWith("/api/projects") || pathname.startsWith("/api/uploads");
+  const isReadMethod = method === "GET" || method === "HEAD" || method === "OPTIONS";
+  // Allow public reads for blogs/projects; keep uploads fully protected
+  const isProtectedApi = (
+    ((pathname.startsWith("/api/blogs") || pathname.startsWith("/api/projects")) && !isReadMethod) ||
+    pathname.startsWith("/api/uploads")
+  );
 
   if (!PASS) return NextResponse.next();
 

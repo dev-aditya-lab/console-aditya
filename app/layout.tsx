@@ -2,10 +2,49 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import "./globals.css";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "Aditya Dev Portfolio";
+const DEFAULT_DESCRIPTION =
+	"Full-stack developer portfolio by Aditya — Next.js, TypeScript, Tailwind, and modern web projects, blogs, and tutorials.";
+
 export const metadata: Metadata = {
-	title: "Console Aditya ",
-	description:
-		"As a Computer Science Engineering student with a passion for building impactful web applications, I specialize in crafting full-stack solutions using modern technologies like React, Next.js, Node.js, TypeScript, Firebase, Tailwind css. My portfolio showcases my journey in software development, highlighting projects that demonstrate my skills in creating user-friendly interfaces and robust back-end systems. I am committed to continuous learning and innovation, always seeking to enhance my expertise in the ever-evolving tech landscape.",
+	metadataBase: new URL(BASE_URL),
+	title: {
+		default: SITE_NAME,
+		template: "%s | Aditya",
+	},
+	description: DEFAULT_DESCRIPTION,
+	alternates: {
+		canonical: "/",
+	},
+	openGraph: {
+		title: SITE_NAME,
+		description: DEFAULT_DESCRIPTION,
+		url: BASE_URL,
+		siteName: SITE_NAME,
+		images: [
+			{
+				url: `${BASE_URL}/og.png`,
+				width: 1200,
+				height: 630,
+				alt: `${SITE_NAME} — Portfolio`.
+			},
+		],
+		locale: "en_US",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: SITE_NAME,
+		description: DEFAULT_DESCRIPTION,
+		images: [`${BASE_URL}/og.png`],
+		creator: "@aditya",
+		site: "@aditya",
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 
 type CodeBlockProps = {
@@ -33,6 +33,7 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   const [copied, setCopied] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
+  const [wrap, setWrap] = React.useState(true);
 
   const tabsExist = tabs.length > 0;
 
@@ -73,28 +74,45 @@ export const CodeBlock = ({
             ))}
           </div>
         )}
-        {!tabsExist && filename && (
-          <div className="flex justify-between items-center py-2">
-            <div className="text-xs text-zinc-400">{filename}</div>
+        <div className="flex justify-between items-center py-2">
+          <div className="flex items-center gap-2">
+            {filename ? (
+              <div className="text-xs text-zinc-400">{filename}</div>
+            ) : (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 uppercase tracking-wide">
+                {activeLanguage || "text"}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setWrap((w) => !w)}
+              className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-sans"
+              title={wrap ? "Disable Wrap" : "Enable Wrap"}
+            >
+              {wrap ? "Wrap" : "No Wrap"}
+            </button>
             <button
               onClick={copyToClipboard}
               className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-sans"
+              title="Copy"
             >
               {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
             </button>
           </div>
-        )}
+        </div>
       </div>
       <SyntaxHighlighter
         language={activeLanguage}
-        style={atomDark}
+        style={oneDark}
         customStyle={{
           margin: 0,
           padding: 0,
           background: "transparent",
           fontSize: "0.875rem", // text-sm equivalent
+          overflowX: "auto",
         }}
-        wrapLines={true}
+        wrapLines={wrap}
         showLineNumbers={true}
         lineProps={(lineNumber) => ({
           style: {

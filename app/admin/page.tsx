@@ -1,10 +1,10 @@
 "use client";
 
+import type { Metadata } from "next";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useRouter } from "next/navigation";
+import { MarkdownRenderer } from "@/components/ui/markdown";
 
 type CloudImage = {
   public_id: string;
@@ -659,10 +659,8 @@ export default function AdminPage() {
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               ) : (
-                <div className="prose prose-slate dark:prose-invert max-w-none bg-gray-50 dark:bg-gray-900/40 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                    {editing.content}
-                  </ReactMarkdown>
+                <div className="bg-gray-50 dark:bg-gray-900/40 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <MarkdownRenderer content={editing.content} />
                 </div>
               )}
 
@@ -692,3 +690,11 @@ export default function AdminPage() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+  title: "Admin",
+};

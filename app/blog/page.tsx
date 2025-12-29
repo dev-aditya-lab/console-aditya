@@ -1,8 +1,21 @@
 import Link from "next/link";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Blog",
+    description: "Articles, tutorials, and notes on modern web development by Aditya.",
+    alternates: { canonical: "/blog" },
+    openGraph: { url: `${BASE_URL}/blog` },
+    twitter: { title: "Blog" },
+  };
+}
 
 type BlogItem = {
   _id: string;
@@ -67,6 +80,23 @@ export default async function BlogListPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      {/* JSON-LD for Blog ItemList */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: docs.map((post, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              url: `${BASE_URL}/blog/${post._id}`,
+              name: post.title,
+            })),
+          }),
+        }}
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-900">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">

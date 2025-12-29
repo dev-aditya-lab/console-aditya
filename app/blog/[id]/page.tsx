@@ -1,11 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { MarkdownRenderer } from "@/components/ui/markdown";
 
 interface Blog {
   _id: string;
@@ -93,136 +89,23 @@ export default function BlogPage({ params }: BlogPageProps) {
       {/* Content Section */}
       <div className="max-w-4xl mx-auto px-6 -mt-8">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 md:p-12 lg:p-16">
-          <article className="prose prose-lg prose-slate dark:prose-invert max-w-none 
-            prose-headings:font-bold prose-headings:tracking-tight
-            prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-8
-            prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-8 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-gray-700
-            prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-6
-            prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
-            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-            prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-bold
-            prose-code:text-pink-600 dark:prose-code:text-pink-400 prose-code:font-semibold
-            prose-pre:bg-gray-900 prose-pre:shadow-lg prose-pre:rounded-xl
-            prose-ul:my-8 prose-ul:space-y-3
-            prose-ol:my-8 prose-ol:space-y-3
-            prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:leading-relaxed
-            prose-table:shadow-lg prose-table:border-collapse prose-table:w-full prose-table:my-8
-            prose-thead:bg-gradient-to-r prose-thead:from-blue-600 prose-thead:to-purple-600
-            prose-th:text-white prose-th:font-bold prose-th:p-4 prose-th:text-left prose-th:border-0
-            prose-td:p-4 prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700
-            prose-tr:bg-white dark:prose-tr:bg-gray-800 prose-tr:even:bg-gray-50 dark:prose-tr:even:bg-gray-700/50">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            code({ inline, className, children, ...props }: any) {
-              const match = /language-(\w+)/.exec(className || "");
-              return !inline && match ? (
-                <SyntaxHighlighter
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  style={atomDark as any}
-                  language={match[1]}
-                  PreTag="div"
-                  {...props}
-                >
-                  {String(children).replace(/\n$/, "")}
-                </SyntaxHighlighter>
-              ) : (
-                <code
-                  className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-0.5 rounded-md text-sm font-semibold border border-pink-200 dark:border-pink-800 cursor-copy"
-                  {...props}
-                >
-                  {children}
-                </code>
-              );
-            },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            img: ({ ...props }: any) => (
-              <div className="my-10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  {...props}
-                  className="rounded-2xl shadow-2xl mx-auto w-full object-cover border-4 border-gray-100 dark:border-gray-700 hover:scale-[1.02] transition-transform duration-300"
-                  alt={props.alt || "Blog Image"}
-                />
-                {props.alt && (
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3 italic">
-                    {props.alt}
-                  </p>
-                )}
-              </div>
-            ),
-            a: ({ ...props }) => (
-              <a
-                {...props}
-                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium underline decoration-2 underline-offset-2 hover:decoration-blue-600 dark:hover:decoration-blue-400 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            ),
-            blockquote: ({ children }) => (
-              <blockquote className="border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 pl-6 pr-4 py-4 my-6 rounded-r-lg italic text-gray-700 dark:text-gray-300 shadow-md">
-                <div className="flex items-start gap-3">
-                  <svg className="w-6 h-6 text-blue-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-                  <div className="flex-1">{children}</div>
-                </div>
-              </blockquote>
-            ),
-            hr: () => (
-              <hr className="my-12 border-0 h-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
-            ),
-            ul: ({ children }) => (
-              <ul className="space-y-3 my-8">
-                {children}
-              </ul>
-            ),
-            ol: ({ children }) => (
-              <ol className="space-y-3 my-8 list-decimal">
-                {children}
-              </ol>
-            ),
-            li: ({ children }) => (
-              <li className="relative pl-2">
-                <span className="inline-flex items-start gap-3">
-                  <span className="mt-2 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
-                  <span className="flex-1">{children}</span>
-                </span>
-              </li>
-            ),
-            table: ({ children }) => (
-              <div className="my-8 overflow-x-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-                <table className="w-full border-collapse">
-                  {children}
-                </table>
-              </div>
-            ),
-            thead: ({ children }) => (
-              <thead className="bg-gradient-to-r from-blue-600 to-purple-600">
-                {children}
-              </thead>
-            ),
-            th: ({ children }) => (
-              <th className="px-6 py-4 text-left text-white font-bold text-sm uppercase tracking-wider border-0">
-                {children}
-              </th>
-            ),
-            td: ({ children }) => (
-              <td className="px-6 py-4 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
-                {children}
-              </td>
-            ),
-            tr: ({ children }) => (
-              <tr className="bg-white dark:bg-gray-800 even:bg-gray-50 dark:even:bg-gray-700/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
-                {children}
-              </tr>
-            ),
-          }}
-        >
-          {blog.content}
-        </ReactMarkdown>
+          {/* JSON-LD structured data for Article */}
+          <script
+            type="application/ld+json"
+            suppressHydrationWarning
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Article',
+                headline: blog.title,
+                datePublished: new Date(blog.createdAt).toISOString(),
+                dateModified: new Date(blog.createdAt).toISOString(),
+                author: { '@type': 'Person', name: 'Aditya' },
+                mainEntityOfPage: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/blog/${blog._id}`,
+              }),
+            }}
+          />
+          <MarkdownRenderer content={blog.content} />
         
           {/* Footer Section */}
           <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
@@ -245,8 +128,7 @@ export default function BlogPage({ params }: BlogPageProps) {
               </button>
             </div>
           </div>
-        </article>
-      </div>
+        </div>
       </div>
     </div>
   );

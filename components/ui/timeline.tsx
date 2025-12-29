@@ -46,7 +46,7 @@ const TimelineItem = ({ entry, side, index }: { entry: TimelineEntry; side: "lef
 
       <motion.article
         style={{ y, opacity, scale }}
-        className={`relative w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/40 backdrop-blur ${
+        className={`relative z-10 w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/85 p-6 shadow-2xl shadow-black/40 backdrop-blur ${
           side === "left" ? "md:-rotate-1" : "md:rotate-1"
         }`}
       >
@@ -116,11 +116,9 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           <p className="mt-3 text-slate-200/80 text-base md:text-lg">A timeline of code, creation, and caffeine ☕</p>
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 top-40 flex justify-center">
-          <div className="h-[120%] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-        </div>
-
         <div ref={ref} className="relative mt-16 space-y-20 md:mt-20">
+          <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-full w-[2px] rounded-full bg-gradient-to-b from-transparent via-sky-300/60 to-transparent blur-[1px]" />
+
           {data.map((item, index) => {
             const side = index % 2 === 0 ? "left" : "right";
             return <TimelineItem key={index} entry={item} side={side} index={index} />;
@@ -128,11 +126,11 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
           <div
             style={{ height: `${height}px` }}
-            className="pointer-events-none absolute left-1/2 top-0 w-[3px] -translate-x-1/2 overflow-hidden bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent via-white/30 to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+            className="pointer-events-none absolute left-1/2 top-0 w-[2px] -translate-x-1/2 overflow-hidden rounded-full bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent via-sky-400/40 to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]"
           >
             <motion.div
               style={{ height: heightTransform, opacity: opacityTransform }}
-              className="absolute inset-x-0 top-0 w-[3px] rounded-full bg-gradient-to-b from-sky-400 via-indigo-500 to-purple-500"
+              className="absolute inset-x-0 top-0 w-[2px] rounded-full bg-gradient-to-b from-sky-300 via-cyan-400 via-60% to-purple-500 shadow-[0_0_25px_rgba(56,189,248,0.45)]"
             />
           </div>
         </div>

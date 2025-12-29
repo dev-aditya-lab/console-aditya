@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Github, Menu, X } from "lucide-react";
 
@@ -44,8 +45,8 @@ export function MainNavbar() {
 
 				<div className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-4 text-white md:px-10 lg:px-12">
 					<Link href="/#home" className="inline-flex items-center gap-2.5" onClick={() => handleNav("/#home")}>
-						<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-indigo-500 text-sm font-bold shadow-lg shadow-blue-500/30">
-							AG
+						<div className="relative h-10 w-10 overflow-hidden rounded-lg border border-white/15 bg-white/10 shadow-lg shadow-blue-500/20">
+							<Image src="/logo.jpg" alt="Aditya Gupta" fill className="object-cover" />
 						</div>
 						<span className="hidden text-base font-semibold md:inline">Aditya Gupta</span>
 					</Link>

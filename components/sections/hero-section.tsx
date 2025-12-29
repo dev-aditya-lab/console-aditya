@@ -111,7 +111,7 @@ export default function HeroSection() {
 								<Mail className="h-5 w-5 text-emerald-300 transition group-hover:scale-110" />
 							</a>
 							<a
-								href="tel:+917355056237"
+								href="tel:+919334282988"
 								className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/40 hover:bg-white/10"
 								aria-label="Call"
 							>

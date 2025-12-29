@@ -45,18 +45,18 @@ export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) 
   }, [projects, activeTag]);
 
   return (
-    <div>
+    <div className="space-y-8">
       {/* Tag Filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2">
         {allTags.map((tag) => (
           <button
             key={tag}
             onClick={() => setActiveTag(tag)}
             className={
-              `px-3 py-1.5 rounded-full text-sm font-medium border transition ` +
+              `px-3 py-1.5 rounded-full text-sm font-semibold border transition ` +
               (activeTag === tag
-                ? `bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow`
-                : `bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700`)
+                ? `bg-gradient-to-r from-sky-500 to-indigo-500 text-white border-transparent shadow-lg shadow-sky-500/20`
+                : `bg-white/10 text-slate-100 border-white/10 hover:border-white/30 hover:bg-white/15`)
             }
           >
             {tag}
@@ -65,43 +65,67 @@ export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) 
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {visible.map((p) => (
           <article
             key={p._id}
-            className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-shadow border border-gray-100 dark:border-gray-700"
+            className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg shadow-black/30 backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl"
           >
             <div className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={p.imageUrl}
                 alt={p.title}
-                className="w-full h-48 object-cover group-hover:scale-[1.03] transition-transform"
+                className="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.04]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-70" />
               <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                 {p.tags.slice(0, 3).map((t) => (
-                  <span key={t} className="px-2 py-0.5 text-xs rounded-full bg-white/90 dark:bg-gray-900/70 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700">
+                  <span key={t} className="px-2 py-0.5 text-xs rounded-full bg-white/90 text-gray-900 shadow">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">{p.title}</h3>
-              <p className="text-gray-700 dark:text-gray-300 line-clamp-3">{p.description}</p>
+            <div className="flex h-full flex-col p-6 text-white">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-200/60">{formatDate(p.createdAt)}</p>
+                  <h3 className="mt-2 text-lg font-semibold leading-tight">{p.title}</h3>
+                  <p className="mt-2 text-sm text-slate-200/80 line-clamp-3">{p.description}</p>
+                </div>
+              </div>
 
-              <div className="mt-4 flex items-center justify-between">
-                <div className="text-xs text-gray-500 dark:text-gray-400">{formatDate(p.createdAt)}</div>
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-200/80">
+                {p.tags.slice(0, 4).map((t) => (
+                  <span key={t} className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 flex items-center justify-between gap-3">
+                <div className="text-xs text-slate-300">Built with care</div>
                 <div className="flex items-center gap-2">
                   {p.githubUrl && (
-                    <a href={withProtocol(p.githubUrl)} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-xs font-medium">
+                    <a
+                      href={withProtocol(p.githubUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-white/30 hover:bg-white/20"
+                    >
                       GitHub
                     </a>
                   )}
                   {p.liveUrl && (
-                    <a href={withProtocol(p.liveUrl)} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-medium">
+                    <a
+                      href={withProtocol(p.liveUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-gradient-to-r from-sky-500 to-indigo-500 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:shadow-sky-500/30"
+                    >
                       Live
                     </a>
                   )}

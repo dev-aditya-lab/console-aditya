@@ -12,6 +12,71 @@ interface TimelineEntry {
   content: React.ReactNode;
 }
 
+const TimelineItem = ({ entry, side, index }: { entry: TimelineEntry; side: "left" | "right"; index: number }) => {
+  const itemRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: itemProgress } = useScroll({
+    target: itemRef,
+    offset: ["start 80%", "end 20%"],
+  });
+  const y = useTransform(itemProgress, [0, 1], [60, -10]);
+  const opacity = useTransform(itemProgress, [0, 0.15], [0, 1]);
+  const scale = useTransform(itemProgress, [0, 1], [0.96, 1]);
+
+  return (
+    <div
+      ref={itemRef}
+      className={`relative md:flex ${side === "left" ? "md:justify-start md:pr-24" : "md:justify-end md:pl-24"}`}
+    >
+      <div className="absolute left-1/2 top-6 -translate-x-1/2">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur shadow-xl shadow-sky-500/30">
+          <div className="h-2.5 w-2.5 rounded-full bg-sky-300" />
+        </div>
+        <div className="absolute inset-0 -z-10 rounded-full bg-sky-400/25 blur-2xl" />
+      </div>
+
+      <motion.div
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={`absolute top-14 hidden h-[2px] w-1/2 md:block ${
+          side === "left" ? "left-1/2 origin-left" : "right-1/2 origin-right"
+        } bg-gradient-to-r from-sky-400/0 via-sky-400/80 to-sky-400/0`}
+      />
+
+      <motion.article
+        style={{ y, opacity, scale }}
+        className={`relative w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/40 backdrop-blur ${
+          side === "left" ? "md:-rotate-1" : "md:rotate-1"
+        }`}
+      >
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_25%_20%,rgba(56,189,248,0.12),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(168,85,247,0.12),transparent_30%)]" />
+        <div className="relative flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-200/70">
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-red-400" />
+              <span className="h-2 w-2 rounded-full bg-amber-300" />
+              <span className="h-2 w-2 rounded-full bg-emerald-300" />
+            </span>
+            {entry.title}
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-semibold text-slate-100">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+            Milestone {index + 1}
+          </span>
+        </div>
+        <div className="relative z-10 mt-4 space-y-3 text-slate-100">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-200/80">
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
+            Code, Creation, Caffeine
+          </div>
+          {entry.content}
+        </div>
+      </motion.article>
+    </div>
+  );
+};
+
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,59 +98,45 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div
-      className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"
+    <section
       ref={containerRef}
+      className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-blue-950 text-white"
     >
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black font-mono dark:text-white max-w-4xl">
-          {`console.log("Aditya Gupta's Journey")`}
-        </h2>
-        <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">
-          Spoiler: It started with “Hello World” and escalated quickly.
-          <br />
-          A timeline of code, creation, and caffeine ☕
-        </p>
+      <div className="absolute inset-0 opacity-70" aria-hidden>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.14),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.12),transparent_35%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="flex justify-start pt-10 md:pt-40 md:gap-10"
-          >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
-                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
-              </div>
-              <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
-                {item.title}
-              </h3>
-            </div>
+      <div className="relative mx-auto max-w-6xl px-6 py-18 md:px-10 lg:px-12">
+        <div className="max-w-3xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-blue-100/80 font-mono">
+            {`console.log("Aditya Gupta's Journey")`}
+          </span>
+          <h2 className="mt-4 text-3xl md:text-4xl font-semibold leading-tight">Spoiler: It started with “Hello World” and escalated quickly.</h2>
+          <p className="mt-3 text-slate-200/80 text-base md:text-lg">A timeline of code, creation, and caffeine ☕</p>
+        </div>
 
-            <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
-                {item.title}
-              </h3>
-              {item.content}{" "}
-            </div>
+        <div className="pointer-events-none absolute inset-x-0 top-40 flex justify-center">
+          <div className="h-[120%] w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+        </div>
+
+        <div ref={ref} className="relative mt-16 space-y-20 md:mt-20">
+          {data.map((item, index) => {
+            const side = index % 2 === 0 ? "left" : "right";
+            return <TimelineItem key={index} entry={item} side={side} index={index} />;
+          })}
+
+          <div
+            style={{ height: `${height}px` }}
+            className="pointer-events-none absolute left-1/2 top-0 w-[3px] -translate-x-1/2 overflow-hidden bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent via-white/30 to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+          >
+            <motion.div
+              style={{ height: heightTransform, opacity: opacityTransform }}
+              className="absolute inset-x-0 top-0 w-[3px] rounded-full bg-gradient-to-b from-sky-400 via-indigo-500 to-purple-500"
+            />
           </div>
-        ))}
-        <div
-          style={{
-            height: height + "px",
-          }}
-          className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] "
-        >
-          <motion.div
-            style={{
-              height: heightTransform,
-              opacity: opacityTransform,
-            }}
-            className="absolute inset-x-0 top-0  w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
-          />
         </div>
       </div>
-    </div>
+    </section>
   );
 };

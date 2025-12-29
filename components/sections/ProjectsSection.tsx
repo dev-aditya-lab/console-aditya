@@ -58,16 +58,21 @@ export default async function ProjectsSection() {
   }
 
   return (
-    <section className="relative py-20">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-end justify-between mb-10">
+    <section className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-blue-950 py-20 text-white">
+      <div className="absolute inset-0 opacity-70" aria-hidden>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.14),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.12),transparent_35%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6 md:px-10 lg:px-12">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-10">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">Featured Projects</h2>
-            <p className="text-gray-600 dark:text-gray-400">A few things I’ve built recently.</p>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-blue-100/80">Featured Work</span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-semibold leading-tight">Featured Projects</h2>
+            <p className="text-slate-200/75">A curated set of builds that show product thinking, engineering depth, and polish.</p>
           </div>
-          <Link href="/projects" className="hidden md:inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white font-medium">
-            View All
+          <Link href="/projects" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/20">
+            View all
           </Link>
         </div>
 

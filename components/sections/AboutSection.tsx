@@ -84,7 +84,7 @@ export function AboutSection() {
             
             <div className="space-y-3 text-slate-700 dark:text-slate-300">
               <p className="leading-relaxed">
-                Hi! I&apos;m a Computer Science Engineering student at Jaypee Institute of Information Technology, passionate about building impactful web applications. I specialize in crafting full-stack solutions using modern technologies like React, Next.js, Node.js, and TypeScript.
+                Hi! I&apos;m a Computer Science Engineering student, passionate about building impactful web applications. I specialize in crafting full-stack solutions using modern technologies like React, Next.js, Node.js, and TypeScript.
               </p>
               <p className="leading-relaxed">
                 Whether it&apos;s building scalable platforms, collaborating in hackathons, or contributing to open-source, I thrive in fast-paced environments that demand problem-solving and creativity. I&apos;m constantly exploring new tech and turning ideas into real-world solutions.

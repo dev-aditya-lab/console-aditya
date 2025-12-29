@@ -11,11 +11,12 @@ interface Blog {
 }
 
 interface BlogPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id?: string | string[] }>;
 }
 
 export default function BlogPage({ params }: BlogPageProps) {
-  const { id } = use(params);
+  const resolved = use(params);
+  const id = Array.isArray(resolved?.id) ? resolved.id[0] : resolved?.id;
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
 

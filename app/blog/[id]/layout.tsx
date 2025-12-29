@@ -16,11 +16,27 @@ function stripMarkdown(md: string): string {
 }
 
 export async function generateMetadata(
-  { params }: { params: { id: string } }
+  { params }: { params?: Promise<{ id?: string | string[] }> }
 ): Promise<Metadata> {
+  type BlogDoc = {
+    _id: unknown;
+    title?: string;
+    content?: string;
+    createdAt?: Date;
+  };
   try {
-    await connectDB();
-    const blog = await Blog.findById(params.id).lean();
+    const resolved = await params;
+    const id = Array.isArray(resolved?.id) ? resolved?.id[0] : resolved?.id;
+    if (!id) {
+      return {
+        title: "Blog | Not Found",
+        description: "Article not found",
+        robots: { index: false, follow: true },
+      };
+    }
+
+  await connectDB();
+  const blog = (await Blog.findById(id).lean()) as BlogDoc | null;
     if (!blog) {
       return {
         title: "Blog | Not Found",

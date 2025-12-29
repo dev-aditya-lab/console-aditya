@@ -1,7 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MarkdownRenderer } from "@/components/ui/markdown";
@@ -690,11 +688,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false,
-  },
-  title: "Admin",
-};

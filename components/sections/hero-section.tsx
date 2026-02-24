@@ -1,175 +1,186 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import Image from "next/image";
 import React from "react";
 import {
-	ArrowUpRight,
-	Code2,
+	ArrowRight,
 	Github,
 	Linkedin,
 	Mail,
-	PhoneForwarded,
-	Sparkles,
+	Mouse,
 } from "lucide-react";
 
 export default function HeroSection() {
+	const mouseX = useMotionValue(0);
+	const mouseY = useMotionValue(0);
+
+	const smoothX = useSpring(mouseX, { stiffness: 120, damping: 18, mass: 0.4 });
+	const smoothY = useSpring(mouseY, { stiffness: 120, damping: 18, mass: 0.4 });
+
+	const glowX = useTransform(smoothX, [-1, 1], [-180, 180]);
+	const glowY = useTransform(smoothY, [-1, 1], [-140, 140]);
+	const floatFastX = useTransform(smoothX, [-1, 1], [-20, 20]);
+	const floatFastY = useTransform(smoothY, [-1, 1], [-14, 14]);
+	const floatSlowX = useTransform(smoothX, [-1, 1], [-10, 10]);
+	const floatSlowY = useTransform(smoothY, [-1, 1], [-8, 8]);
+
+	const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
+		const rect = event.currentTarget.getBoundingClientRect();
+		const x = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+		const y = (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+		mouseX.set(Math.max(-1, Math.min(1, x)));
+		mouseY.set(Math.max(-1, Math.min(1, y)));
+	};
+
+	const handleMouseLeave = () => {
+		mouseX.set(0);
+		mouseY.set(0);
+	};
+
 	return (
-		<div className="relative overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-blue-950 text-white">
-			<div className="absolute inset-0 opacity-70" aria-hidden>
-				<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.25),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.2),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.18),transparent_35%)]" />
-				<div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+		<section className="relative isolate overflow-hidden bg-[#161616] text-white">
+			<div aria-hidden className="absolute inset-0">
+				<div className="absolute left-[33.3%] top-0 h-full w-px bg-white/10" />
+				<div className="absolute left-[66.6%] top-0 h-full w-px bg-white/10" />
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(99,102,241,0.18),transparent_45%)]" />
 			</div>
 
-			<div className="relative mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-6xl flex-col justify-center px-6 py-16 md:px-10 lg:px-12">
-				<div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
-						className="space-y-6"
-					>
-						<div className="flex flex-wrap items-center gap-3 text-sm text-blue-100/80">
-							<span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur">
-								<Sparkles className="h-4 w-4 text-sky-300" />
-								Shipping developer-crafted experiences
-							</span>
-							<span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-								<div className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-								Available for remote collabs
-							</span>
-						</div>
+			<div
+				onMouseMove={handleMouseMove}
+				onMouseLeave={handleMouseLeave}
+				className="relative mx-auto flex min-h-[calc(100vh-72px)] w-full max-w-7xl flex-col items-center justify-center px-6 py-16 md:px-10 lg:px-12"
+			>
+				<motion.div
+					aria-hidden
+					style={{ x: glowX, y: glowY }}
+					className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-400/15 blur-3xl"
+				/>
 
-						<div className="space-y-3">
-							<h1 className="text-balance text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-								<span className="text-white/70">Hello, I&apos;m</span> <span className="bg-gradient-to-r from-sky-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">Aditya Gupta</span>
-							</h1>
-							<p className="max-w-2xl text-lg text-slate-200/80 sm:text-xl">
-								Full-stack developer turning product ideas into performant, production-grade web apps with Next.js, TypeScript, and cloud-native patterns.
-							</p>
-						</div>
-
-						<div className="flex flex-wrap items-center gap-3">
-							<a
-								href="mailto:hello@devaditya.dev"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-400 to-indigo-500 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:translate-y-[-1px] hover:shadow-blue-500/30"
-							>
-								Let&apos;s build together
-								<ArrowUpRight className="h-4 w-4" />
-							</a>
-							<a
-								href="#projects"
-								className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-base font-semibold text-white/90 backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-							>
-								View projects
-								<Code2 className="h-4 w-4" />
-							</a>
-						</div>
-
-						<div className="flex flex-wrap items-center gap-4 text-sm text-slate-200/80">
-							<div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-								<div className="h-2 w-2 rounded-full bg-emerald-400" />
-								4+ shipped products
-							</div>
-							<div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-								<div className="h-2 w-2 rounded-full bg-sky-400" />
-								Next.js · TypeScript · Node.js
-							</div>
-							<div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-								<div className="h-2 w-2 rounded-full bg-indigo-400" />
-								Open to freelance & collabs
-							</div>
-						</div>
-
-						<div className="flex items-center gap-4 pt-2 text-slate-200/80">
-							<a
-								href="https://www.linkedin.com/in/aditya-gupta9608/"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/40 hover:bg-white/10"
-								aria-label="LinkedIn"
-							>
-								<Linkedin className="h-5 w-5 text-sky-300 transition group-hover:scale-110" />
-							</a>
-							<a
-								href="https://github.com/gupta00068"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/40 hover:bg-white/10"
-								aria-label="GitHub"
-							>
-								<Github className="h-5 w-5 text-white transition group-hover:scale-110" />
-							</a>
-							<a
-								href="mailto:hello@devaditya.dev"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/40 hover:bg-white/10"
-								aria-label="Email"
-							>
-								<Mail className="h-5 w-5 text-emerald-300 transition group-hover:scale-110" />
-							</a>
-							<a
-								href="tel:+919334282988"
-								className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/40 hover:bg-white/10"
-								aria-label="Call"
-							>
-								<PhoneForwarded className="h-5 w-5 text-indigo-300 transition group-hover:scale-110" />
-							</a>
-						</div>
-					</motion.div>
-
-					<motion.div
-						initial={{ opacity: 0, y: 24 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, delay: 0.15 }}
-						className="relative"
-					>
-						<div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent blur-3xl" aria-hidden />
-						<div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
-							<div className="flex items-center justify-between">
-								<div>
-								<p className="text-xs uppercase tracking-[0.2em] text-slate-200/60">Currently building</p>
-								<h3 className="mt-2 text-xl font-semibold text-white">Full-stack web applications</h3>
-								<p className="text-sm text-slate-200/70">React · Next.js · Node.js · MongoDB</p>
-								</div>
-								<div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-100">
-									<span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
-									Live
-								</div>
-							</div>
-
-							<div className="mt-6 rounded-2xl border border-white/10 bg-neutral-900/80 p-4">
-								<div className="flex items-center justify-between text-xs text-slate-200/70">
-									<span className="inline-flex items-center gap-2">
-										<Code2 className="h-4 w-4 text-sky-300" />
-									aditya@dev: ~/projects
-								</span>
-								<span>zsh</span>
-							</div>
-							<pre className="mt-3 whitespace-pre-wrap rounded-xl bg-gradient-to-br from-slate-900/70 via-slate-900/50 to-slate-900/30 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-white/5">
-								<span className="text-sky-300">$</span> npm create next-app@latest my-app
-								
-								<span className="text-purple-300">✔</span> integrated REST APIs with secure auth
-								<span className="text-purple-300">✔</span> built responsive UI with Tailwind CSS
-								<span className="text-purple-300">✔</span> deployed to production with Firebase
-							</pre>
-						</div>
-						<div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-200/80">
-							<div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-								<p className="text-xs text-slate-200/60">Focus</p>
-								<p className="text-base font-semibold text-white">Clean code, user experience</p>
-							</div>
-							<div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-								<p className="text-xs text-slate-200/60">Stack</p>
-								<p className="text-base font-semibold text-white">MERN · Next.js · Firebase</p>
-							</div>
-						</div>
+				<motion.div
+					style={{ x: floatFastX, y: floatFastY }}
+					animate={{ y: [0, -10, 0] }}
+					transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+					className="absolute left-4 top-20 hidden w-28 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:block"
+				>
+					<div className="relative h-36 w-full">
+						<Image src="https://res.cloudinary.com/di77yygcs/image/upload/v1767108660/blog/feltdmhbzaye8plifhnx.png" alt="dummy visual" fill sizes="112px" className="object-cover" />
 					</div>
-					</motion.div>
+				</motion.div>
+				<motion.div
+					style={{ x: floatSlowX, y: floatSlowY }}
+					animate={{ y: [0, 8, 0] }}
+					transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+					className="absolute right-8 top-28 hidden w-36 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:block"
+				>
+					<div className="relative h-36 w-full">
+						<Image src="https://res.cloudinary.com/di77yygcs/image/upload/v1766586677/blog/mzo1jahfhuowzm1vcxbc.png" alt="dummy visual" fill sizes="144px" className="object-cover" />
+					</div>
+				</motion.div>
+				<motion.div
+					style={{ x: floatSlowX, y: floatFastY }}
+					animate={{ y: [0, -9, 0] }}
+					transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+					className="absolute bottom-24 left-6 hidden w-44 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:block"
+				>
+					<div className="relative h-28 w-full">
+						<Image src="https://res.cloudinary.com/di77yygcs/image/upload/v1766575746/blog/g78jfjcswnpws7ie9awv.png" alt="dummy visual" fill sizes="176px" className="object-cover" />
+					</div>
+				</motion.div>
+				<motion.div
+					style={{ x: floatFastX, y: floatSlowY }}
+					animate={{ y: [0, 10, 0] }}
+					transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+					className="absolute bottom-20 right-5 hidden w-32 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:block"
+				>
+					<div className="relative h-40 w-full">
+						<Image src="https://res.cloudinary.com/di77yygcs/image/upload/v1766586341/blog/waeg4wvsx52drmnaargq.png" alt="dummy visual" fill sizes="128px" className="object-cover" />
+					</div>
+				</motion.div>
+
+				<motion.div
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6 }}
+					className="relative z-10 mx-auto max-w-4xl space-y-7 text-center"
+				>
+					<div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-slate-100/85 backdrop-blur">
+						Aditya Gupta · Full Stack Developer
+					</div>
+
+					<h1 className="text-balance text-5xl font-semibold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
+						<span className="block">Build. Ship. Scale.</span>
+						<span className="block bg-gradient-to-r from-sky-300 via-indigo-300 to-violet-300 bg-clip-text text-transparent">
+							Modern Digital Products
+						</span>
+						<span className="block text-white/75">With Performance-First Engineering</span>
+					</h1>
+
+					<p className="mx-auto max-w-2xl text-base text-slate-300 sm:text-lg">
+						I craft high-quality web apps with Next.js, TypeScript, Node.js, and MongoDB — clean architecture, smooth UX, and production-ready execution.
+					</p>
+
+					<div className="flex flex-wrap items-center justify-center gap-3">
+						<a
+							href="#projects"
+							className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:scale-[1.02]"
+						>
+							View Work
+							<ArrowRight className="h-4 w-4" />
+						</a>
+						<a
+							href="mailto:hello@devaditya.dev"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+						>
+							Let&apos;s Talk
+							<Mail className="h-4 w-4" />
+						</a>
+					</div>
+
+					<div className="flex items-center justify-center gap-2 pt-1">
+						<a
+							href="https://www.linkedin.com/in/aditya-gupta9608/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 transition hover:bg-white/10"
+							aria-label="LinkedIn"
+						>
+							<Linkedin className="h-5 w-5 transition group-hover:scale-110" />
+						</a>
+						<a
+							href="https://github.com/gupta00068"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 transition hover:bg-white/10"
+							aria-label="GitHub"
+						>
+							<Github className="h-5 w-5 transition group-hover:scale-110" />
+						</a>
+						<a
+							href="mailto:hello@devaditya.dev"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 transition hover:bg-white/10"
+							aria-label="Email"
+						>
+							<Mail className="h-5 w-5 transition group-hover:scale-110" />
+						</a>
+					</div>
+
+					<div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.16em] text-white/70">
+						<Mouse className="h-3.5 w-3.5" />
+						Move your mouse
+					</div>
+				</motion.div>
+
+				<div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/55">
+					<div className="flex h-11 w-6 items-start justify-center rounded-full border border-white/30 p-1">
+						<motion.span animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity }} className="h-2 w-2 rounded-full bg-white/80" />
+					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }

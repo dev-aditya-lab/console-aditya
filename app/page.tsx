@@ -3,6 +3,7 @@ import { MainNavbar } from "@/components/MainNavbar";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { Contact } from "@/components/sections/Contact";
 import { TimelineSection } from "@/components/sections/TimeLineSection";
+import { AccomplishmentsSection } from "@/components/sections/AccomplishmentsSection";
 import MySkills from "@/components/sections/MySkills";
 import Footer from "@/components/sections/Footer";
 import ProjectsSection from "@/components/sections/ProjectsSection";
@@ -67,6 +68,9 @@ export default function Home():React.ReactNode {
     </section>
     <section id="timeline">
       <TimelineSection/>
+    </section>
+    <section id="accomplishments">
+      <AccomplishmentsSection/>
     </section>
     <section id="skills">
       <MySkills/>

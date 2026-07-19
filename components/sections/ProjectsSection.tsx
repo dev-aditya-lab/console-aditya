@@ -26,7 +26,11 @@ export default async function ProjectsSection() {
     // If DB is unavailable during build or runtime, skip rendering section
     return null;
   }
-  const raw = await Project.find().sort({ createdAt: -1 }).lean();
+  const HOME_PROJECTS_LIMIT = 6;
+  const raw = await Project.find()
+    .sort({ order: 1, createdAt: -1 })
+    .limit(HOME_PROJECTS_LIMIT)
+    .lean();
   type LeanProject = {
     _id: unknown;
     title: string;
